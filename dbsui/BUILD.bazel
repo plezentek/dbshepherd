@@ -1,0 +1,56 @@
+# Copyright 2021 Plezentek, Inc. All rights reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+load("@io_bazel_rules_go//go:def.bzl", "go_embed_data", "go_library")
+
+genrule(
+    name = "dbsui",
+    srcs = glob([
+        "lib/**/*",
+        "packages/**/*",
+        "web/**/*",
+        "pubspec.*",
+    ]),
+    outs = [
+        "build/web/main.dart.js",
+        "build/web/version.json",
+        "build/web/assets/packages/cupertino_icons/assets/CupertinoIcons.ttf",
+        "build/web/assets/fonts/MaterialIcons-Regular.otf",
+        "build/web/assets/AssetManifest.json",
+        "build/web/assets/FontManifest.json",
+        "build/web/assets/NOTICES",
+        "build/web/icons/Icon-192.png",
+        "build/web/icons/Icon-512.png",
+        "build/web/favicon.png",
+        "build/web/manifest.json",
+        "build/web/index.html",
+        "build/web/flutter_service_worker.js",
+    ],
+    cmd = "cd dbsui && flutter build web --tree-shake-icons --release --no-null-assertions --no-native-null-assertions --no-source-maps && cp -R build/web/* ../$(@D)/build/web/",
+)
+
+go_embed_data(
+    name = "flutter_app",
+    srcs = [":dbsui"],
+    package = "dbsui",
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "static_files",
+    # keep
+    srcs = [":flutter_app"],
+    importpath = "github.com/plezentek/dbshepherd/dbsui",
+    visibility = ["//visibility:public"],
+)

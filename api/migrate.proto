@@ -1,0 +1,74 @@
+// Copyright 2021 Plezentek, Inc. All rights reserved
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+option go_package = "github.com/plezentek/dbshepherd/api";
+
+package open;
+
+service Migrate {
+  rpc ListEnvironments(Empty) returns (ListEnvironmentsResponse) {}
+  rpc GetDatabaseVersion(Environment) returns (GetDatabaseVersionResponse) {}
+  rpc ListMigrations(Environment) returns (ListMigrationsResponse) {}
+  rpc GetMigration(GetMigrationRequest) returns (GetMigrationResponse) {}
+  rpc SetVersion(SetVersionRequest) returns (PerformMigrationResponse) {}
+  rpc ForceMarkVersion(ForceMarkVersionRequest)
+      returns (PerformMigrationResponse) {}
+}
+
+message Empty {}
+
+message Environment { string name = 1; }
+
+message ListEnvironmentsResponse { repeated Environment environments = 1; }
+
+message GetDatabaseVersionResponse {
+  uint64 version = 1;
+  bool is_dirty = 2;
+  string error = 3;
+}
+
+message Migration {
+  uint64 version = 1;
+  string identifier_up = 2;
+  string identifier_down = 3;
+  // These fields are not filled for the ListMigrations call
+  string source_up = 4;
+  string source_down = 5;
+}
+
+message ListMigrationsResponse { repeated Migration migrations = 1; }
+
+message GetMigrationRequest {
+  string environment = 1;
+  uint64 version = 2;
+}
+
+message GetMigrationResponse { Migration migration = 1; }
+
+message SetVersionRequest {
+  string environment = 1;
+  uint64 version = 2;
+}
+
+message PerformMigrationResponse {
+  bool successful = 1;
+  string error = 2;
+}
+
+message ForceMarkVersionRequest {
+  string environment = 1;
+  uint64 version = 2;
+}
