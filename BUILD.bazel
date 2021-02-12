@@ -29,9 +29,25 @@ go_library(
     ],
 )
 
+go_library(
+    name = "dev_library",
+    srcs = ["main.go"],
+    importpath = "github.com/plezentek/dbshepherd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//cmd:dev_library",
+    ],
+)
+
 go_binary(
     name = "dbshepherd",
     embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "dbshepherd_dev",
+    embed = [":dev_library"],
     visibility = ["//visibility:public"],
 )
 

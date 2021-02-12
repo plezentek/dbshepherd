@@ -31,11 +31,39 @@ wire_injector(
     ],
     deps = [
         "//api:go_default_library",
+        "//app/grpc:go_default_library",
         "//common:go_default_library",
         "//dbsui:static_files",
         "@com_github_fsnotify_fsnotify//:go_default_library",
-        "@com_github_golang_migrate_migrate_v4//:migrate",  # keep
-        "@com_github_golang_migrate_migrate_v4//source",  # keep
+        "@com_github_google_wire//:go_default_library",
+        "@com_github_improbable_eng_grpc_web//go/grpcweb:go_default_library",
+        "@com_github_rs_cors//:go_default_library",
+        "@com_github_spf13_pflag//:go_default_library",
+        "@com_github_spf13_viper//:go_default_library",
+        "@com_github_unrolled_logger//:go_default_library",
+        "@in_gopkg_yaml_v2//:go_default_library",
+        "@io_k8s_klog//:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes:go_default_library",
+        "@org_golang_google_grpc//metadata:go_default_library",
+        "@org_golang_google_grpc//status:go_default_library",
+        "@org_golang_x_crypto//bcrypt:go_default_library",
+        "@org_golang_x_net//http2:go_default_library",
+        "@org_golang_x_net//http2/h2c:go_default_library",
+    ],
+)
+
+wire_injector(
+    name = "injector_dev",
+    srcs = [
+        ":sources",
+    ],
+    deps = [
+        "//api:go_default_library",
+        "//app/grpc:go_default_library",
+        "//common:go_default_library",
+        "//dbsui:static_files_dev",
+        "@com_github_fsnotify_fsnotify//:go_default_library",
         "@com_github_google_wire//:go_default_library",
         "@com_github_improbable_eng_grpc_web//go/grpcweb:go_default_library",
         "@com_github_rs_cors//:go_default_library",
@@ -65,11 +93,40 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//api:go_default_library",
+        "//app/grpc:go_default_library",
         "//common:go_default_library",
         "//dbsui:static_files",
         "@com_github_fsnotify_fsnotify//:go_default_library",
-        "@com_github_golang_migrate_migrate_v4//:migrate",  # keep
-        "@com_github_golang_migrate_migrate_v4//source",  # keep
+        "@com_github_google_wire//:go_default_library",
+        "@com_github_improbable_eng_grpc_web//go/grpcweb:go_default_library",
+        "@com_github_rs_cors//:go_default_library",
+        "@com_github_spf13_pflag//:go_default_library",
+        "@com_github_spf13_viper//:go_default_library",
+        "@com_github_unrolled_logger//:go_default_library",
+        "@in_gopkg_yaml_v2//:go_default_library",
+        "@io_k8s_klog//:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_x_crypto//bcrypt:go_default_library",
+        "@org_golang_x_net//http2:go_default_library",
+        "@org_golang_x_net//http2/h2c:go_default_library",
+    ],
+)
+
+go_library(
+    name = "dev_library",
+    # keep
+    srcs = [
+        ":injector",
+        ":sources",
+    ],
+    importpath = "github.com/plezentek/dbshepherd/app/services",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//api:go_default_library",
+        "//app/grpc:go_default_library",
+        "//common:go_default_library",
+        "//dbsui:static_files_dev",
+        "@com_github_fsnotify_fsnotify//:go_default_library",
         "@com_github_google_wire//:go_default_library",
         "@com_github_improbable_eng_grpc_web//go/grpcweb:go_default_library",
         "@com_github_rs_cors//:go_default_library",

@@ -42,9 +42,23 @@ genrule(
     cmd = "cd dbsui && flutter build web --tree-shake-icons --release --no-null-assertions --no-native-null-assertions --no-source-maps && cp -R build/web/* ../$(@D)/build/web/",
 )
 
+filegroup(
+    name = "dev_filetree",
+    srcs = [
+        "empty_sitemap.xml",
+    ],
+)
+
 go_embed_data(
     name = "flutter_app",
     srcs = [":dbsui"],
+    package = "dbsui",
+    visibility = ["//visibility:public"],
+)
+
+go_embed_data(
+    name = "empty_app",
+    srcs = [":dev_filetree"],
     package = "dbsui",
     visibility = ["//visibility:public"],
 )
@@ -53,6 +67,14 @@ go_library(
     name = "static_files",
     # keep
     srcs = [":flutter_app"],
+    importpath = "github.com/plezentek/dbshepherd/dbsui",
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "static_files_dev",
+    # keep
+    srcs = [":empty_app"],
     importpath = "github.com/plezentek/dbshepherd/dbsui",
     visibility = ["//visibility:public"],
 )

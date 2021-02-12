@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package services
+package grpc
 
 import (
 	"bytes"
@@ -29,9 +29,7 @@ import (
 
 type MigrationApiServer struct {
 	pb.UnimplementedMigrateServer
-	Closer       common.CancelContext
-	Health       *HealthService
-	Environments *MigrationEnvironments
+	Environments *common.MigrationEnvironments
 }
 
 func (mas *MigrationApiServer) ListEnvironments(ctx context.Context, request *pb.Empty) (*pb.ListEnvironmentsResponse, error) {

@@ -18,9 +18,12 @@ import (
 	"context"
 
 	"github.com/google/wire"
+	"github.com/plezentek/dbshepherd/app/grpc"
 	"github.com/plezentek/dbshepherd/common"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	yaml "gopkg.in/yaml.v2"
+	"k8s.io/klog"
 )
 
 type cancelPair struct {
@@ -28,15 +31,98 @@ type cancelPair struct {
 	fn  common.CancelFunction
 }
 
-func NewMigrationEnvironments(fs *pflag.FlagSet, appViper *viper.Viper) *MigrationEnvironments {
-	return BuildEnvironments(fs, appViper)
+func NewMigrationEnvironments(fs *pflag.FlagSet, appViper *viper.Viper) *common.MigrationEnvironments {
+	var out common.MigrationEnvironments
+	if fs.Changed("env") {
+		// Env flag can be repeated to add multiple environments.  Each flag
+		// instance is an inline YAML dictionary mapping a single key, the
+		// environment name, to a list of two uris, first the source uri, then
+		// the database uri
+		// Example: --env 'prod: [uri1, uri2]' --env 'dev: [uri3, uri4]'
+		raw, err := fs.GetStringArray("env")
+		if err != nil {
+			klog.Errorf("Internal error parsing env flag: %s", err)
+			return nil
+		}
+		for _, v := range raw {
+			var env map[string][]string
+			if err := yaml.Unmarshal([]byte(v), &env); err == nil && len(env) == 1 {
+				for name, uris := range env {
+					if len(uris) != 2 {
+						klog.Errorf("Internal error parsing env flag, found %d uris instead of 2", len(uris))
+						return nil
+					}
+					out.Environments = append(out.Environments, common.MigrationEnvironment{Name: name, Source: uris[0], Database: uris[1]})
+				}
+			} else if err != nil {
+				klog.Errorf("Internal error parsing env flag: %s", err)
+				return nil
+			} else {
+				klog.Errorf("Internal error parsing env flag, found %d entries instead of 1", len(env))
+				return nil
+			}
+		}
+	} else {
+		if viper.InConfig("environments") {
+			// Environments config entry expects a dictionary where each key is
+			// an environment name and each value is a list of two uris, the
+			// source uri followed by the database uri.
+			// Example:
+			// environments:
+			//   prod:
+			//   - uri1
+			//   - uri2
+			//   dev:
+			//   - uri3
+			//   - uri4
+			var environments map[string][]string
+			if err := viper.UnmarshalKey("environments", &environments); err == nil {
+				for name, uris := range environments {
+					if len(uris) != 2 {
+						klog.Errorf("Internal error parsing environments in config file, found %d uris instead of 2", len(uris))
+						return nil
+					}
+					out.Environments = append(out.Environments, common.MigrationEnvironment{Name: name, Source: uris[0], Database: uris[1]})
+				}
+			} else {
+				klog.Errorf("Internal error parsing config file: %s", err)
+				return nil
+			}
+		} else {
+			// DBS_ENVIRONMENTS environment variable expects a YAML list of
+			// dictionaries. Each dictionary has one key only where the key is
+			// the name of the environment and the value is a list of two uris,
+			// the source uri followed by the database uri.
+			// Example: DBS_ENVIRONMENTS='[prod: [uri1, uri2], dev: [uri3, uri4]]'
+			raw := viper.GetString("environments")
+			var environments []map[string][]string
+			if err := yaml.Unmarshal([]byte(raw), &environments); err == nil {
+				for _, env := range environments {
+					if len(env) != 1 {
+						klog.Errorf("Internal error parsing environment variable, found %d keys in env dict instead of 1", len(env))
+						return nil
+					}
+					for name, uris := range env {
+						if len(uris) != 2 {
+							klog.Errorf("Internal error parsing environments in config file, found %d uris instead of 2", len(uris))
+							return nil
+						}
+						out.Environments = append(out.Environments, common.MigrationEnvironment{Name: name, Source: uris[0], Database: uris[1]})
+					}
+				}
+			} else {
+				klog.Errorf("Internal error parsing environment variable: %s", err)
+				return nil
+			}
+		}
+	}
+	return &out
 }
-
 func NewMigrationApiServer(
 	ctx common.CancelContext,
-	mes *MigrationEnvironments,
-	hs *HealthService) *MigrationApiServer {
-	return &MigrationApiServer{Closer: ctx, Health: hs, Environments: mes}
+	mes *common.MigrationEnvironments,
+	hs *HealthService) *grpc.MigrationApiServer {
+	return &grpc.MigrationApiServer{Environments: mes}
 }
 
 func NewHealthService(ctx common.CancelContext) *HealthService {
@@ -51,7 +137,7 @@ func NewWebServer(
 	ctx common.CancelContext,
 	hs *HealthService,
 	fs *pflag.FlagSet,
-	mas *MigrationApiServer) *WebServer {
+	mas *grpc.MigrationApiServer) *WebServer {
 	return &WebServer{
 		Closer:             ctx,
 		port:               appViper.GetString("port"),

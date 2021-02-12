@@ -28,6 +28,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	pb "github.com/plezentek/dbshepherd/api"
+	appgrpc "github.com/plezentek/dbshepherd/app/grpc"
 	"github.com/plezentek/dbshepherd/common"
 	"github.com/plezentek/dbshepherd/dbsui"
 	"github.com/rs/cors"
@@ -56,7 +57,7 @@ type WebServer struct {
 	Closer             common.CancelContext
 	port               string
 	Health             *HealthService
-	MigrationApiServer *MigrationApiServer
+	MigrationApiServer *appgrpc.MigrationApiServer
 	GrpcServer         *grpc.Server
 	GrpcWebServer      *grpcweb.WrappedGrpcServer
 	HttpHandler        http.HandlerFunc

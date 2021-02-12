@@ -12,14 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+# gazelle:prefix github.com/plezentek/dbshepherd/app/grpc
+gazelle(name = "gazelle")
 
 go_library(
     name = "go_default_library",
-    srcs = [
-        "common.go",
-        "migration_environments.go",
-    ],
-    importpath = "github.com/plezentek/dbshepherd/common",
+    srcs = glob(["*.go"]),
+    importpath = "github.com/plezentek/dbshepherd/app/grpc",
     visibility = ["//visibility:public"],
+    deps = [
+        "//api:go_default_library",
+        "//common:go_default_library",
+        "@com_github_golang_migrate_migrate_v4//:migrate",  # keep
+        "@com_github_golang_migrate_migrate_v4//source",  # keep
+    ],
 )
