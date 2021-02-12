@@ -17,6 +17,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_embed_data", "go_library")
 genrule(
     name = "dbsui",
     srcs = glob([
+        "images/**/*",
         "lib/**/*",
         "packages/**/*",
         "web/**/*",
@@ -29,6 +30,7 @@ genrule(
         "build/web/assets/fonts/MaterialIcons-Regular.otf",
         "build/web/assets/AssetManifest.json",
         "build/web/assets/FontManifest.json",
+        "build/web/assets/images/dbshepherd.png",
         "build/web/assets/NOTICES",
         "build/web/icons/Icon-192.png",
         "build/web/icons/Icon-512.png",

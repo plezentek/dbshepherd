@@ -61,6 +61,7 @@ class HomePageState extends State<HomePage> {
           builder: (context, environmentState) {
             return Scaffold(
               appBar: AppBar(
+                leading: Image(image: AssetImage('images/dbshepherd.png')),
                 title: const Text('DB Shepherd'),
                 actions: [
                   Padding(
