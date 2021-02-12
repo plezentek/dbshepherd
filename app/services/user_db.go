@@ -26,7 +26,8 @@ import (
 )
 
 type UserDb struct {
-	Users []User `mapstructure:"users"`
+	Users          []User `mapstructure:"users"`
+	randomPassword []byte
 }
 
 type User struct {
@@ -59,6 +60,9 @@ func (udb *UserDb) AuthEnabled() bool {
 func (udb *UserDb) IsAuthenticated(user string, password string) bool {
 	for _, entry := range udb.Users {
 		if user != entry.Username {
+			// Perform a password hash and comparison to prevent leaking the
+			// existence of users due to timing attacks.
+			bcrypt.CompareHashAndPassword(udb.randomPassword, []byte(user))
 			continue
 		}
 		if err := bcrypt.CompareHashAndPassword([]byte(entry.Password), []byte(password)); err != nil {
@@ -71,12 +75,25 @@ func (udb *UserDb) IsAuthenticated(user string, password string) bool {
 }
 
 func BuildUserDb(fs *pflag.FlagSet, viper *viper.Viper) *UserDb {
+	// In order to prevent timing attacks on the user dictionary, we compare a
+	// bogus password using the same hashing mechanism even when the user is
+	// not present.
+	randomPassword, err := bcrypt.GenerateFromPassword([]byte(randStringBytes(30)), 10)
+
 	// If we have some sort of problem building a user database, we fail safe
 	// and lock access to the interface by generating an unguessable username
 	// and password
-	lockout := UserDb{Users: []User{RandUser()}}
+	lockout := UserDb{Users: []User{RandUser()}, randomPassword: randomPassword}
 
-	var out UserDb
+	// We handle the randomPassword error here, because we now have a user
+	// database we can use to lock out users
+	if err != nil {
+		klog.Errorf("Internal error building user database: %s", err)
+		return &lockout
+	}
+
+	out := UserDb{randomPassword: randomPassword}
+
 	if fs.Changed("user") {
 		// User flag can be repeated to add multiple users.  It is effectively
 		// an inline YAML dictionary with one key only.  The key is the
