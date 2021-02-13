@@ -50,9 +50,11 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "rules_pkg",
-    branch = "issue_50",
+    # branch = "issue_50",
+    commit = "64b5231c00f74acefcafea9fe916957a95a97282",
     patch_cmds = ["mv pkg/* ."],
     remote = "https://github.com/dmayle/rules_pkg",
+    shallow_since = "1607354641 +0100",
 )
 
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")

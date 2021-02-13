@@ -1,0 +1,83 @@
+# Copyright 2021 Plezentek, Inc. All rights reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "full_library",
+    srcs = ["main.go"],
+    importpath = "github.com/plezentek/dbshepherd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//cmd:go_default_library",
+        "//modules:full",
+    ],
+)
+
+go_library(
+    name = "postgres_files_library",
+    srcs = ["main.go"],
+    importpath = "github.com/plezentek/dbshepherd",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cmd:go_default_library",
+        "//modules:postgres_files",
+    ],
+)
+
+go_library(
+    name = "sqlite_files_library",
+    srcs = ["main.go"],
+    importpath = "github.com/plezentek/dbshepherd",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cmd:go_default_library",
+        "//modules:sqlite_files",
+    ],
+)
+
+go_library(
+    name = "dev_library",
+    srcs = ["main.go"],
+    importpath = "github.com/plezentek/dbshepherd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//cmd:dev_library",
+        "//modules:sqlite_files",
+    ],
+)
+
+go_binary(
+    name = "dbshepherd",
+    embed = [":full_library"],
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "dbshepherd_postgres_files",
+    actual = "//binary/postgres_files:dbshepherd",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "dbshepherd_sqlite_files",
+    actual = "//binary/sqlite_files:dbshepherd",
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "dbshepherd_dev",
+    embed = [":dev_library"],
+    visibility = ["//visibility:public"],
+)

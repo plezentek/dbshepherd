@@ -13,34 +13,9 @@
 # limitations under the License.
 
 load("@io_bazel_rules_go//go:def.bzl", "go_binary")
-load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 
-alias(
+go_binary(
     name = "dbshepherd",
-    actual = "//binary:dbshepherd",
-    visibility = ["//visibility:public"],
-)
-
-alias(
-    name = "dbshepherd_postgres_files",
-    actual = "//binary:dbshepherd_postgres_files",
-    visibility = ["//visibility:public"],
-)
-
-alias(
-    name = "dbshepherd_sqlite_files",
-    actual = "//binary:dbshepherd_sqlite_files",
-    visibility = ["//visibility:public"],
-)
-
-alias(
-    name = "dbshepherd_dev",
-    actual = "//binary:dbshepherd_dev",
-    visibility = ["//visibility:public"],
-)
-
-go_image(
-    name = "dbshepherd_image",
-    embed = [":dbshepherd"],
+    embed = ["//binary:sqlite_files_library"],
     visibility = ["//visibility:public"],
 )
