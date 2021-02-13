@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package modules
 
 import (
-	"github.com/plezentek/dbshepherd/cmd"
-	_ "github.com/plezentek/dbshepherd/modules"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
-func main() {
-	cmd.Execute()
-}
+var Module = "Postgres / Files"

@@ -20,12 +20,35 @@ load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 gazelle(name = "gazelle")
 
 go_library(
-    name = "go_default_library",
+    name = "full_library",
     srcs = ["main.go"],
     importpath = "github.com/plezentek/dbshepherd",
     visibility = ["//visibility:private"],
     deps = [
         "//cmd:go_default_library",
+        "//modules:full",
+    ],
+)
+
+go_library(
+    name = "postgres_files_library",
+    srcs = ["main.go"],
+    importpath = "github.com/plezentek/dbshepherd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//cmd:go_default_library",
+        "//modules:postgres_files",
+    ],
+)
+
+go_library(
+    name = "sqlite_files_library",
+    srcs = ["main.go"],
+    importpath = "github.com/plezentek/dbshepherd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//cmd:go_default_library",
+        "//modules:sqlite_files",
     ],
 )
 
@@ -41,7 +64,19 @@ go_library(
 
 go_binary(
     name = "dbshepherd",
-    embed = [":go_default_library"],
+    embed = [":full_library"],
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "dbshepherd_postgres_files",
+    embed = [":postgres_files_library"],
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "dbshepherd_sqlite_files",
+    embed = [":sqlite_files_library"],
     visibility = ["//visibility:public"],
 )
 
