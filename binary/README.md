@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Binary Build Rules
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Binary Build Rules
 
 This directory contains the Bazel build rules for the various build flavors,
 one directory per flavor. This is because the go_binary executable is named

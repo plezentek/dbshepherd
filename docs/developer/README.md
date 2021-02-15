@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Developer Documentation
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Developer Documentation
 
 ## Table Of Contents
 1. [Architecture](architecture.md)

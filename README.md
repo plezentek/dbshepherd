@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd - Database Migration Server
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd - Database Migration Server
 
 DB Shepherd is an open source web console for managing your database's
 migrations.
@@ -13,7 +13,7 @@ DB Shepherd supports running from a standalone binary, from the [DB Shephard
 Docker Image](https://hub.docker.com/r/plezentek/dbshepherd), or via the
 provided Kubernetes manifests.
 
-![Health Server](images/healthy.png)
+![Health Server](/images/healthy.png)
 
 ## Table of Contents
 1. [Leaderboard](#leaderboard)
@@ -68,22 +68,22 @@ Full documentation can be found in the [docs directory](docs/README.md).
 
 ## Screenshots
 ### Up-to-date Server
-![Healthy Server](images/healthy.png)
+![Healthy Server](/images/healthy.png)
 
 ### Upgrade available
-![Upgrage Available](images/upgrade_available.png)
+![Upgrage Available](/images/upgrade_available.png)
 
 ### Syntax highlighting of migration source
-![Syntax Highlighting](images/upgrade_source.png)
+![Syntax Highlighting](/images/upgrade_source.png)
 
 ### Confirmation before upgrading
-![Confirmation Dialong](images/confirmation.png)
+![Confirmation Dialong](/images/confirmation.png)
 
 ### Advanced Controls
-![Advanced Controls](images/advanced_controls.png)
+![Advanced Controls](/images/advanced_controls.png)
 
 ### Out-of-date Server
-![Out-of-date Server](images/out_of_date.png)
+![Out-of-date Server](/images/out_of_date.png)
 
 ## Versioning
 DB Shepherd uses Gamever for versioning, which means we publish bounties for

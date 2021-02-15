@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Documentation
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Documentation
 
 ## Table Of Contents
 1. [Configuration](configuration.md)
