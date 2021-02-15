@@ -63,9 +63,9 @@ rules_pkg_dependencies()
 
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "1698624e878b0607052ae6131aa216d45ebb63871ec497f26c67455b34119c80",
-    strip_prefix = "rules_docker-0.15.0",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.15.0/rules_docker-v0.15.0.tar.gz"],
+    sha256 = "a139e494d955fa133acb48bd7adc1a0b803139c0649f690c60b711700a24ec30",
+    strip_prefix = "rules_docker-0.15.1-alpha",
+    urls = ["https://github.com/dmayle/rules_docker/releases/download/v0.15.1-alpha/rules_docker-v0.15.1-alpha.tar.gz"],
 )
 
 load("@io_bazel_rules_docker//repositories:repositories.bzl", container_repositories = "repositories")
