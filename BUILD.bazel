@@ -41,6 +41,21 @@ alias(
 
 go_image(
     name = "dbshepherd_image",
+    base = "@distroless_base-debian10//image",
     embed = [":dbshepherd"],
+    visibility = ["//visibility:public"],
+)
+
+go_image(
+    name = "dbshepherd_postgres_files_image",
+    embed = [":dbshepherd_postgres_files"],
+    visibility = ["//visibility:public"],
+)
+
+go_image(
+    name = "dbshepherd_sqlite_files_image",
+    base = "@distroless_base-debian10//image",
+    embed = [":dbshepherd_sqlite_files"],
+    pure = "off",
     visibility = ["//visibility:public"],
 )

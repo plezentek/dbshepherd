@@ -79,11 +79,11 @@ container_deps()
 load("@io_bazel_rules_docker//container:container.bzl", "container_pull")
 
 container_pull(
-    name = "distroless_base",
+    name = "distroless_base-debian10",
     # 'tag' is also supported, but digest is encouraged for reproducibility.
-    digest = "sha256:8a8a1001da9d158353269106eb22fe74142895c21939b01a99c9197d4e264ef7",
+    digest = "sha256:b51ef838ae58fb3089a65e9d76827075ca12eca8a41179aa0beed55ff73a026e",
     registry = "gcr.io",
-    repository = "distroless/base",
+    repository = "distroless/base-debian10",
 )
 
 load("@io_bazel_rules_docker//go:image.bzl", _go_image_repos = "repositories")
