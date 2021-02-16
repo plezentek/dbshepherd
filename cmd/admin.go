@@ -38,8 +38,9 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "dbshepherd",
-	Short: "Admin server for monitoring and performing database migrations",
+	Use:     "dbshepherd",
+	Version: "1.0.0",
+	Short:   "Admin server for monitoring and performing database migrations",
 	Long: `DB Shepherd is a web-based admin interface for checking on and performing
 	database migrations.`,
 	// Uncomment the following line if your bare application
