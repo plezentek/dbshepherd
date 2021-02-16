@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: dbshepherd
+  name: dbshepherd
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: dbshepherd
+  template:
+    metadata:
+      labels:
+        app: dbshepherd
+    spec:
+      initContainers:
+      - name: git-sync-clone
+        env:
+        - name: GIT_SYNC_ONE_TIME
+          value: "true"
+        - name: GIT_SYNC_REPO
+          value: "http://github.com/plezentek/dbshepherd.git"
+        - name: GIT_SYNC_BRANCH
+          value: main
+        - name: GIT_SYNC_DEST
+          value: dbshepherd
+        - name: GIT_SYNC_ROOT
+          value: /git
+        image: k8s.gcr.io/git-sync/git-sync:v3.2.0
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /git
+          name: schema
+      containers:
+      - name: git-sync
+        env:
+        - name: GIT_SYNC_WAIT
+          value: "30"
+        - name: GIT_SYNC_REPO
+          value: "https://github.com/plezentek/dbshepherd.git"
+        - name: GIT_SYNC_BRANCH
+          value: main
+        - name: GIT_SYNC_DEST
+          value: dbshepherd
+        - name: GIT_SYNC_ROOT
+          value: /git
+        image: k8s.gcr.io/git-sync/git-sync:v3.2.0
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 1m
+            memory: 20Mi
+        securityContext:
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /git
+          name: schema
+      - name: dbshepherd
+        image: plezentek/dbshepherd:sqlite_files-1.0.0
+        env:
+        imagePullPolicy: IfNotPresent
+        args:
+        - '--env=demo: [file:///schema/dbshepherd/examples/schema, sqlite3:///tmp/database.sqlite]'
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            scheme: HTTPS
+          initialDelaySeconds: 2
+          periodSeconds: 10
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+        volumeMounts:
+        - name: schema
+          mountPath: /schema
+          readOnly: true
+      volumes:
+      - name: schema
+        emptyDir: {}

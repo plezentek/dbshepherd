@@ -34,7 +34,11 @@ If you want to install the software locally (for development, or with your own
 packaging) then get the latest release from
 https://github.com/plezentek/dbshepherd/releases.
 
-There are also Docker images available at https://hub.docker.com/r/plezentek/dbshepherd.
+There are Docker images available at
+https://hub.docker.com/r/plezentek/dbshepherd.
+
+Finally, you can take a look at our example [Kubernetes](https://kubernetes.io)
+manifests in the [examples directory](/examples/manifests).
 
 ## Configuration
 DB Shepherd supports reading it’s configuration via flags, environment
@@ -59,8 +63,8 @@ multiple times on the command line, like `--user 'bob: pass' --user 'alice: pass
 | port   | The TCP port to listen on                 | 8080                   |                                                                             |
 | cert   | The TLS certificate to use                | *none*                 | /certs/server.crt                                                           |
 | key    | The TLS key to use                        | *none*                 | /certs/server.key                                                           |
-| user   | User and bcrypt hash (use multiple times) | *none*                 | --user ‘bob: $2y$10$Y7dxOOsSEGR3jO2heIEnrOUE8djhD2XE7oSmkbo6tHv8vb/oKiDt.’  |
-| env    | Database environment for migrations       | *none*                 | --env ‘prod: [files:///schemas/prod, postgres://user:password@host/dbname]’ |
+| user   | User and bcrypt hash (use multiple times) | *none*                 | --user 'bob: $2y$10$Y7dxOOsSEGR3jO2heIEnrOUE8djhD2XE7oSmkbo6tHv8vb/oKiDt.'  |
+| env    | Database environment for migrations       | *none*                 | --env 'prod: [files:///schemas/prod, postgres://user:password@host/dbname]' |
 
 
 ## Documentation
