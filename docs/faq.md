@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Frequently Asked Questions
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Frequently Asked Questions
 
 ### Why a sheep with sunglasses?
 The name of the project made me think of the infamous [DB

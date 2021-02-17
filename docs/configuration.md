@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Configuration
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Configuration
 
 DB Shepherd supports reading it’s configuration via flags, environment
 variables, or a YAML-based configuration file, `.dbshepherd.yaml`.

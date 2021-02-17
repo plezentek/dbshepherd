@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Build Process
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Build Process
 
 DB Shepherd uses [Bazel](https://bazel.build) for the build system.  There are
 not yet bazel rules for [Flutter](https://flutter.dev) yet, so you also have to

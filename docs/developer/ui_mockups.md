@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd UI Mockups
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd UI Mockups
 
 These are the UI mockups used to develop the Flutter interface.  They were
 created along with [SVG Bob](https://github.com/ivanceras/svgbob) for

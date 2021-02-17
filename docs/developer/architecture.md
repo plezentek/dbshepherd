@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Architecture
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Architecture
 
 This is an overview of the architecture of the DB Shephard app.
 

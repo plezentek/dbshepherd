@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Release Process
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Release Process
 
 In order to encourage frequent releases, the release process has been automated
 as much as possible.

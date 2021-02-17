@@ -1,4 +1,4 @@
-# ![DB Shepherd](images/dbshepherd.png) DB Shepherd Versioning
+# ![DB Shepherd](/images/dbshepherd.png) DB Shepherd Versioning
 
 DB Shepherd uses a versioning system called Gamever. It accepts naming
 conventions from [Semver](https://semver.org), but without the rules for
