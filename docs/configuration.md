@@ -32,13 +32,13 @@ All environment variables are specified with the prefix 'DBS_'. Because you can
 only specify one value for an environment variable, for the complex values
 users and environments, we accept inline YAML lists.
 
-| Name             | Descriptions                                      | Default | Example                                                                     |
-| :--:             | :----------:                                      | :-----: | :-----:                                                                     |
-| DBS_PORT         | The TCP port to listen on                         | 8080    | DBS_PORT=443                                                                |
-| DBS_CERT         | The TLS certificate to use                        | *none*  | DBS_CERT=/certs/server.crt                                                  |
-| DBS_KEY          | The TLS key to use                                | *none*  | DBS_KEY=/certs/server.key                                                   |
-| DBS_USERS        | List of users and bcryps hashes                   | *none*  | DBS_USERS='[username: passwordhash, username2: passwordhash2]'              |
-| DBS_ENVIRONMENTS | List of environments and source and database URIs | *none*  | DBS_ENVIRONMENTS=DBS_ENVIRONMENTS='[prod: [uri1, uri2], dev: [uri3, uri4]]' |
+| Name             | Descriptions                                      | Default | Example                                                        |
+| :--:             | :----------:                                      | :-----: | :-----:                                                        |
+| DBS_PORT         | The TCP port to listen on                         | 8080    | DBS_PORT=443                                                   |
+| DBS_CERT         | The TLS certificate to use                        | *none*  | DBS_CERT=/certs/server.crt                                     |
+| DBS_KEY          | The TLS key to use                                | *none*  | DBS_KEY=/certs/server.key                                      |
+| DBS_USERS        | List of users and bcryps hashes                   | *none*  | DBS_USERS='[username: passwordhash, username2: passwordhash2]' |
+| DBS_ENVIRONMENTS | List of environments and source and database URIs | *none*  | DBS_ENVIRONMENTS='[prod: [uri1, uri2], dev: [uri3, uri4]]'     |
 
 ### Config File
 Top-level sections are optional, and will use default values when appropriate.
